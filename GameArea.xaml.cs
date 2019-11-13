@@ -44,7 +44,7 @@ namespace GameProject
             coins = new Ellipse[Model.RowCount, Model.ColCount];
 
 
-            //Call Fill Map to create the walls and borders for the game
+            //Call Fill gameCanvas to create the walls and borders for the game
             FillMap();
             CreateMap();
 
@@ -226,42 +226,55 @@ namespace GameProject
             {
                 for (int x = 0; x < Model.ColCount; x++)
                 {
-                    var obj = map[y, x];
+                    //var obj = map[y, x];
 
-                    if (obj == ObjectType.Coin)
+                    if (map[y, x] == ObjectType.Coin)
                     {
                         //populate white spaces with coins
                         var coin = GetCoin();
-                        Map.Children.Add(coin);
+                        // Set x, y pos
+                        var xCoord = (Model.FixedDimension - coin.Width) / 2;
+                        var yCoord = (Model.FixedDimension - coin.Height) / 2;
+                        Canvas.SetTop(coin, (x * _model.dimension) + xCoord);
+                        Canvas.SetLeft(coin, (y * _model.dimension) + yCoord);
 
-                        var xCor = (Model.FixedDimension - coin.Width) / 2;
-                        var yCor = (Model.FixedDimension - coin.Height) / 2;
+                        gameCanvas.Children.Add(coin);
 
-                        Canvas.SetTop(coin, (x * _model.dimension) + xCor);
-                        Canvas.SetLeft(coin, (y * _model.dimension) + yCor);
-
-                        coins[y, x] = coin;
-                        continue;
+                        coins[y, x] = coin; // keep track of the coins
+                        //continue; // TODO: Test
                     }
 
-                    var shape = GetObject(obj);
+                    var shape = GetObject(map[y,x]);
 
-                    if (obj == ObjectType.Packman)
+                    if (map[y,x] == ObjectType.Packman)
                     {
                         shape.Name = "pacMan";
-                    }
+                        Canvas.SetTop(shape, (x * _model.dimension));
+                        Canvas.SetLeft(shape, (y * _model.dimension));
 
-                    Map.Children.Add(shape);
-                    Canvas.SetTop(shape, (x * _model.dimension));
-                    Canvas.SetLeft(shape, (y * _model.dimension));
-
-                    if (obj == ObjectType.Packman)
-                    {
-                        pacMan = shape;
-                        Canvas.SetZIndex(pacMan, (int)999);
-
+                        pacMan = shape; // save pacman obj 
+                        Canvas.SetZIndex(pacMan, (int)999); 
                         _pacManXCoordinates = x;
                         _pacManYCoordinates = y;
+
+                        gameCanvas.Children.Add(shape);
+                    }
+
+                    if (map[y, x] == ObjectType.Obstacle)
+                    {
+                        shape.Name = "Obstacle";
+                        Canvas.SetTop(shape, (x * _model.dimension));
+                        Canvas.SetLeft(shape, (y * _model.dimension));
+
+                        gameCanvas.Children.Add(shape);
+                    }
+
+                    if (map[y, x] == ObjectType.Monster)
+                    {
+                        Canvas.SetTop(shape, (x * _model.dimension));
+                        Canvas.SetLeft(shape, (y * _model.dimension));
+
+                        gameCanvas.Children.Add(shape);
                     }
                 }
             }
@@ -314,6 +327,7 @@ namespace GameProject
                         Canvas.SetLeft(pacMan, Canvas.GetLeft(pacMan) - _model.dimension);
                         _pacManXCoordinates--;
                         IsHitToCoin();
+                        IsHitToMonster();
                     }
                     break;
                 case Key.Right:
@@ -322,6 +336,7 @@ namespace GameProject
                         Canvas.SetLeft(pacMan, Canvas.GetLeft(pacMan) + _model.dimension);
                         _pacManXCoordinates++;
                         IsHitToCoin();
+                        IsHitToMonster();
                     }
                     break;
                 case Key.Up:
@@ -330,6 +345,7 @@ namespace GameProject
                         Canvas.SetTop(pacMan, Canvas.GetTop(pacMan) - _model.dimension);
                         _pacManYCoordinates--;
                         IsHitToCoin();
+                        IsHitToMonster();
                     }
                     break;
                 case Key.Down:
@@ -338,6 +354,7 @@ namespace GameProject
                         Canvas.SetTop(pacMan, Canvas.GetTop(pacMan) + _model.dimension);
                         _pacManYCoordinates++;
                         IsHitToCoin();
+                        IsHitToMonster();
                     }
                     break;
             }
@@ -347,7 +364,8 @@ namespace GameProject
 
         private bool IsHitObstacle(Key key)
         {
-            ObjectType obj = ObjectType.Coin;
+            //ObjectType obj = ObjectType.Coin;
+            ObjectType obj = ObjectType.None;
 
             switch (key)
             {
@@ -364,10 +382,23 @@ namespace GameProject
                     obj = map[_pacManXCoordinates, _pacManYCoordinates + 1];
                     break;
             }
-
-            return obj == ObjectType.Obstacle;
+            if (obj == ObjectType.Obstacle)
+                return true;
+            else return false;
         }
+        private bool IsHitToMonster()
+        {
+            var obj = map[_pacManXCoordinates, _pacManYCoordinates];
 
+            if (obj == ObjectType.Monster)
+            {
+                MessageBox.Show("YOU HIT A MONSTER");
+                //this.Close();
+                return true;
+            }
+
+            return false;
+        }
         private void IsHitToCoin()
         {
             var obj = map[_pacManXCoordinates, _pacManYCoordinates];
@@ -376,10 +407,52 @@ namespace GameProject
             {
                 _score++;
                 tbScore.Text = _score.ToString("000");
-                // map[_pacManXCoordinates, _pacManYCoordinates] = ObjectType.Space;
-
+                // Get coin render type (Ellipse) to be removed from canvas
                 var coin = coins[_pacManXCoordinates, _pacManYCoordinates];
-                Map.Children.Remove(coin);
+                // Get location of coin in map layout and reset type
+                map[_pacManXCoordinates, _pacManYCoordinates] = ObjectType.Space;
+                // Remove coin from canvas
+                gameCanvas.Children.Remove(coin);
+            }
+        }
+
+        private void EnemyAIMove()
+        {
+            for (int col = 0; col < _model.dimension; col++)
+            {
+                for (int row = 0; row < _model.dimension; row++)
+                {
+                    var obj = map[col, row];
+
+                    if (obj == ObjectType.Monster)
+                    {
+                        var xpos = col;
+                        var ypos = row;
+                        // LEFT
+                        if(map[xpos - 1, ypos] == ObjectType.Space)
+                        {
+
+                        }
+                    }
+                    //switch (key)
+                    //{
+                    //    case Key.Left:
+                    //        obj = map[_pacManXCoordinates - 1, _pacManYCoordinates];
+                    //        break;
+                    //    case Key.Right:
+                    //        obj = map[_pacManXCoordinates + 1, _pacManYCoordinates];
+                    //        break;
+                    //    case Key.Up:
+                    //        obj = map[_pacManXCoordinates, _pacManYCoordinates - 1];
+                    //        break;
+                    //    case Key.Down:
+                    //        obj = map[_pacManXCoordinates, _pacManYCoordinates + 1];
+                    //        break;
+                    //}
+                    //if (obj == ObjectType.Obstacle)
+                    //    return true;
+                    //else return false;
+                }
             }
         }
 

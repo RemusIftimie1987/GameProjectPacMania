@@ -12,6 +12,7 @@ namespace GameProject
         Packman,
         Obstacle,
         Monster,
-        Space
+        Space,
+        None
     }
 }

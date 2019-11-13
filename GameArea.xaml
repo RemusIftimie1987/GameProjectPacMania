@@ -9,7 +9,7 @@
         Title="GameArea" Height="795" Width="775">
     <Grid>
 
-        <Canvas Name="Map">
+        <Canvas Name="gameCanvas">
             <StackPanel Panel.ZIndex="1" Orientation="Vertical">
                 <Grid VerticalAlignment="Top" Width="200" Height="50">
                     <Grid.ColumnDefinitions>
