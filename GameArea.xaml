@@ -5,16 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GameProject"
         mc:Ignorable="d"
-        Title="GameArea" Height="450" Width="800">
-    <Grid Background="LightGoldenrodYellow">
-        <Rectangle x:Name="leftVerticalRectangle" Fill="DarkSeaGreen" HorizontalAlignment="Left" Height="120" Margin="174,88,0,0" Stroke="Black" VerticalAlignment="Top" Width="40" RenderTransformOrigin="1.552,0.161"/>
-        <Rectangle x:Name="rightVerticalRectangle" Fill="DarkSeaGreen" HorizontalAlignment="Left" Height="120" Margin="561,88,0,0" Stroke="Black" VerticalAlignment="Top" Width="40" RenderTransformOrigin="1.552,0.161"/>
-        <Rectangle x:Name="leftHorizRectangle" Fill="DarkSeaGreen" HorizontalAlignment="Left" Height="40" Margin="134,300,0,0" Stroke="Black" VerticalAlignment="Top" Width="120"/>
-        <Rectangle x:Name="rightHorizRectangle" Fill="DarkSeaGreen" HorizontalAlignment="Left" Height="40" Margin="523,300,0,0" Stroke="Black" VerticalAlignment="Top" Width="120"/>
-        <Ellipse x:Name="playerPac" Fill="SpringGreen" HorizontalAlignment="Left" Height="25" Margin="74,164,0,0" Stroke="Black" VerticalAlignment="Top" Width="25"/>
-        <Ellipse x:Name="enemyPurple" Fill="Plum" HorizontalAlignment="Left" Height="25" Margin="386,66,0,0" Stroke="Black" VerticalAlignment="Top" Width="25"/>
-        <Ellipse x:Name="enemyBlue" Fill="Navy" HorizontalAlignment="Left" Height="25" Margin="426,347,0,0" Stroke="Black" VerticalAlignment="Top" Width="25"/>
-        <Ellipse x:Name="enemyRed" Fill="Red" HorizontalAlignment="Left" Height="25" Margin="682,38,0,0" Stroke="Black" VerticalAlignment="Top" Width="25"/>
+        KeyDown="Window_KeyDown"        
+        Title="GameArea" Height="795" Width="775">
+    <Grid>
+
+        <Canvas Name="Map">
+            <StackPanel Panel.ZIndex="1" Orientation="Vertical">
+                <Grid VerticalAlignment="Top" Width="200" Height="50">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="SCORE: " FontSize="25" />
+                    <TextBlock Grid.Column="1" x:Name="tbScore" Text="000" FontSize="25"/>
+                </Grid>
+            </StackPanel>
+            
+        </Canvas>
 
     </Grid>
 </Window>
