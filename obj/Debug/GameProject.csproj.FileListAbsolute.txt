@@ -54,3 +54,4 @@ C:\Users\Remus Iftimie\Engineering45\GameProjectPacMania\obj\Debug\GameProject.c
 C:\Users\Remus Iftimie\Engineering45\GameProjectPacMania\obj\Debug\GameProject.csproj.CoreCompileInputs.cache
 C:\Users\Remus Iftimie\Engineering45\GameProjectPacMania\obj\Debug\GameProject.exe
 C:\Users\Remus Iftimie\Engineering45\GameProjectPacMania\obj\Debug\GameProject.pdb
+C:\Users\Remus Iftimie\Engineering45\GameProjectPacMania\obj\Debug\GameProject.csprojAssemblyReference.cache
