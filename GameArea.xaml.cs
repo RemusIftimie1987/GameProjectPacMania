@@ -415,7 +415,7 @@ namespace GameProject
                 gameCanvas.Children.Remove(coin);
             }
         }
-
+        // Implement the Monster movement
         private void EnemyAIMove()
         {
             for (int col = 0; col < _model.dimension; col++)
@@ -430,6 +430,21 @@ namespace GameProject
                         var ypos = row;
                         // LEFT
                         if(map[xpos - 1, ypos] == ObjectType.Space)
+                        {
+
+                        }
+                        //UP
+                        else if (map[xpos, ypos - 1] == ObjectType.Space)
+                        {
+
+                        }
+                        //RIGHT
+                        else if (map[xpos +1, ypos] == ObjectType.Space)
+                        {
+
+                        }
+                        //DOWN
+                        else if(map[xpos, ypos + 1] == ObjectType.Space)
                         {
 
                         }
