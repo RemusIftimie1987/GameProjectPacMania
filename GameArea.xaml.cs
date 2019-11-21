@@ -25,6 +25,7 @@ namespace GameProject
         private ObjectType[,] map;
         private Ellipse[,] coins;
         private Rectangle pacMan;
+        private Rectangle[] _monsterRectangles;
         //private System.Windows.Threading.DispatcherTimer gameTickTimer = new System.Windows.Threading.DispatcherTimer();
 
         private int _pacManXCoordinates;
@@ -43,11 +44,12 @@ namespace GameProject
             // create a new ellipse object of type array to implement coins in each white space
             coins = new Ellipse[Model.RowCount, Model.ColCount];
 
-
+            _monsterRectangles = new Rectangle[1];
             //Call Fill gameCanvas to create the walls and borders for the game
             FillMap();
             CreateMap();
 
+            // Call InitializeMonsters() below
         }
 
         private void FillMap()
