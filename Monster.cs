@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,13 +9,16 @@ using System.Windows.Shapes;
 
 namespace GameProject
 {
-    class Monster
+    public class Monster
     {
         private Rectangle _monster;
         private int _x;
         private int _y;
         private Direction _latestOppositeDirection;
         private bool _isMoved;
+
+        public int xpos { get => _x; }
+        public int ypos { get => _y; }
 
         public Monster(Rectangle rectangle, int x, int y)
         {
@@ -24,7 +28,7 @@ namespace GameProject
         }
 
         public void Move(ObjectType[,] map)
-        {
+        {//catch the exception here
             var direction = DetectDirection(map, new Direction[] { Direction.Bottom, Direction.Left, Direction.Right, Direction.Up });
 
             switch (direction)
@@ -48,7 +52,7 @@ namespace GameProject
             }
         }
 
-        private Direction DetectDirection(ObjectType[,] map, Direction[] directions)
+        private Direction DetectDirection(ObjectType[,] monsterMap, Direction[] directions)
         {
             var random = new Random();
 
@@ -76,16 +80,16 @@ namespace GameProject
             switch (direction)
             {
                 case Direction.Up:
-                    obj = map[_x, _y - 1];
+                    obj = monsterMap[_x, _y - 1];
                     break;
                 case Direction.Right:
-                    obj = map[_x + 1, _y];
+                    obj = monsterMap[_x + 1, _y];
                     break;
                 case Direction.Bottom:
-                    obj = map[_x, _y + 1];
+                    obj = monsterMap[_x, _y + 1];
                     break;
                 case Direction.Left:
-                    obj = map[_x - 1, _y];
+                    obj = monsterMap[_x - 1, _y];
                     break;
             }
 
@@ -93,8 +97,14 @@ namespace GameProject
             {
                 var index = Array.IndexOf(directions, direction);
                 var newDirections = directions.RemoveAt(index);
-                return DetectDirection(map, newDirections);
+                return DetectDirection(monsterMap, newDirections);
             }
+
+            if (obj == ObjectType.Packman)
+            {
+                throw new Exception();
+            }
+
 
             // dont go back, go forward            
             _isMoved = true;
@@ -118,4 +128,3 @@ namespace GameProject
         }
     }
 }
-

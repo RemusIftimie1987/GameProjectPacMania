@@ -63,6 +63,12 @@
     <Compile Include="HighScores.xaml.cs">
       <DependentUpon>HighScores.xaml</DependentUpon>
     </Compile>
+    <Compile Include="YouLose.xaml.cs">
+      <DependentUpon>YouLose.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="YouWin.xaml.cs">
+      <DependentUpon>YouWin.xaml</DependentUpon>
+    </Compile>
     <Page Include="GameArea.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -80,6 +86,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="HighScores.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="YouLose.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="YouWin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
